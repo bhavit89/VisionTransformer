@@ -72,7 +72,7 @@ class AttentionHead(nn.Module):
         attention = attention @ V
         return attention
 
-
+# create multi head attention
 class MultiHeadAttention(nn.Module):
     def __init__(self, d_model, n_heads):
         super().__init__()
