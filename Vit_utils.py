@@ -30,9 +30,6 @@ class Patches(nn.Module):
         return x
 
 
-
-
-
 # create positional Encoding 
 class PositionalEncoding(nn.Module):
     def __init__(self, embedding_dim, n_patches):
@@ -50,33 +47,8 @@ class PositionalEncoding(nn.Module):
 
        
 
+   
 #  creating  attention layer 
-
-class AttentionHead(nn.Module):
-    def __init__(self, d_model ,head_size): # (embedding , output of attention)
-        super().__init__()
-        self.head_side = head_size
-
-        # creating Query ,Key ,Value
-        self.query = nn.Linear(d_model,head_size)
-        self.key = nn.Linear(d_model ,  head_size)
-        self.value = nn.Linear(d_model, head_size)
-
-    
-    def forward(self , x):
-        # Get  Q K V
-        Q = self.query(x)
-        K = self.key(x)
-        V = self.value(x)
-
-        attention = Q @ K.transpose(-2,-1)
-        attention  = attention/(self.head_side ** 0.5)
-        attention = torch.softmax(attention ,dim =1)
-        attention = attention @ V
-        return attention
-    
-#  creating  attention layer 
-
 class AttentionHead(nn.Module):
     def __init__(self, d_model ,head_size): # (embedding , output of attention)
         super().__init__()
@@ -114,7 +86,8 @@ class MultiHeadAttention(nn.Module):
         out = torch.cat([head(x) for head in  self.heads],dim = -1)
         out = self.full_connected(out)
         return out 
-    
+
+# create Transformer encoder
 class TransformerEncoder(nn.Module):
     def __init__(self, d_model ,n_heads ,scale_mlp = 4):
         super().__init__()
